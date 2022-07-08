@@ -1,11 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
+import { ReactElement } from 'react';
 import './App.css';
 import Navbar from './components/Navbar'
 import ImageList from './components/ImageList'
 import Pagination  from './components/Pagination';
 
-function App() {
+const App = (): ReactElement => {
   return (
     <div className="App">
       <Navbar />

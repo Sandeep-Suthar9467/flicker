@@ -1,6 +1,11 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import { FLICKER_API_KEY } from '../constant';
+import { FlickerList } from '../types/flicker';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import CommentIcon from '@mui/icons-material/Comment';
+import { Box } from '@mui/material';
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -12,6 +17,17 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 export default function QuiltedImageList() {
+  const [itemData, setItemData] = useState<FlickerList>();
+  useEffect(() => {
+    fetch(
+      `https://api.flickr.com/services/rest?extras=can_comment%2Ccan_print%2Ccount_comments%2Ccount_faves%2Cdescription%2Cisfavorite%2Clicense%2Cmedia%2Cneeds_interstitial%2Cowner_name%2Cpath_alias%2Crealname%2Crotation%2Curl_sq%2Curl_q%2Curl_t%2Curl_s%2Curl_n%2Curl_w%2Curl_m%2Curl_z%2Curl_c%2Curl_l&per_page=50&page=1&date=2022-07-04&viewerNSID=&method=flickr.interestingness.getList&csrf=&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&reqId=e3ac1f6f-c3a5-463f-8ce0-8c6fc9b94433&nojsoncallback=1`)
+                  .then((res) => res.json())
+                  .then((json) => {
+                    setItemData(json)
+      });
+  }, []); 
+
+  if( !itemData || !itemData.photos?.photo?.length) return <><h1>no Data</h1></>;
   return (
     <ImageList
       sx={{ width: '80%'  }}
@@ -20,76 +36,27 @@ export default function QuiltedImageList() {
       rowHeight={121}
       
     >
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
+      {itemData.photos.photo?.map((item) => (
+        <ImageListItem key={item.title} cols={1} rows={1} className="containerImg">
           <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
+            {...srcset(item.url_w, 121)}
             alt={item.title}
             loading="lazy"
           />
+          <div className="middle">
+            <div className="text">
+              <Box display={"flex"} alignItems="center" color={"#fff"}>
+                <StarBorderIcon htmlColor="#fff"/>
+                <div>{item.count_faves}</div>
+              </Box>
+              <Box display={"flex"} alignItems="center" color={"#fff"} marginLeft="5px">
+                <CommentIcon htmlColor="#fff"/>
+                <div>{item.count_comments}</div>
+              </Box>
+            </div>
+          </div>
         </ImageListItem>
       ))}
     </ImageList>
   );
-}
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-    author: '@arwinneil',
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-    cols: 2,
-  },
-];
+};
