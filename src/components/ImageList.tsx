@@ -4,7 +4,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CommentIcon from '@mui/icons-material/Comment';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 
 export default function QuiltedImageList() {
   const itemData = useSelector((state:State) => state.flicker.images)
+  const loading = useSelector((state:State) => state.flicker.loading)
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const dispatch = useDispatch()
@@ -38,14 +39,15 @@ export default function QuiltedImageList() {
       rowHeight={121}
       
     >
-      {itemData.photos.photo?.map((item) => (
-        <ImageListItem key={item.title} cols={1} rows={1} className="containerImg">
-          <img
+      {(loading ? Array.from(Array(50)) : itemData.photos.photo)?.map((item,index) => (
+        <ImageListItem key={item ? item.title : index} cols={1} rows={1} className="containerImg">
+          {item ? <img
             {...srcset(item.url_w, 121)}
             alt={item.title}
             loading="lazy"
-          />
-          <div className="middle">
+          /> :
+          <Skeleton variant="rectangular" width={265} height={121} />          }
+          {item ?<div className="middle">
             <div className="text">
               <Box display={"flex"} alignItems="center" color={"#fff"}>
                 <StarBorderIcon htmlColor="#fff"/>
@@ -55,8 +57,8 @@ export default function QuiltedImageList() {
                 <CommentIcon htmlColor="#fff"/>
                 <div>{item.count_comments}</div>
               </Box>
-            </div>
-          </div>
+            </div> 
+          </div> : null}
         </ImageListItem>
       ))}
     </ImageList>
