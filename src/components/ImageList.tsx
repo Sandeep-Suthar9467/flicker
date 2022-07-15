@@ -29,7 +29,10 @@ export default function QuiltedImageList() {
   useEffect(() => {
     dispatch(fetchImages('1'));
   }, []); 
-
+  const onClickHandler = (url:string) => {
+    // setSelected(id); 
+    window.open(url, "_blank");
+} 
   if( !itemData || !itemData.photos?.photo?.length) return <><h1>no Data</h1></>;
   return (
     <ImageList
@@ -37,14 +40,16 @@ export default function QuiltedImageList() {
       variant="quilted"
       cols={matches ? 4 : 2}
       rowHeight={121}
-      
     >
       {(loading ? Array.from(Array(50)) : itemData.photos.photo)?.map((item,index) => (
-        <ImageListItem key={item ? item.title : index} cols={1} rows={1} className="containerImg">
-          {item ? <img
+        <ImageListItem key={item ? item.title : index.toString()} cols={1} rows={1} className="containerImg">
+          {item ? 
+          <img
             {...srcset(item.url_w, 121)}
             alt={item.title}
             loading="lazy"
+            onClick ={()=>onClickHandler(item.url_c)}
+
           /> :
           <Skeleton variant="rectangular" width={265} height={121} />          }
           {item ?<div className="middle">

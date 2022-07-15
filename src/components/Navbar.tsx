@@ -3,12 +3,27 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-
+import Modal from '@mui/material/Modal';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-
+import LoginForm from './LoginForm';
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+}
 const ResponsiveAppBar = (): React.ReactElement => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
+    <>
     <AppBar position="static" style={{}} >
       <Container maxWidth="xl" style={{display:'flex',justifyContent: 'center',background: 'black'}}>
         <Toolbar disableGutters  style={{display: 'flex' , width: '80%'}}>
@@ -51,42 +66,27 @@ const ResponsiveAppBar = (): React.ReactElement => {
           </Typography>
 
           <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-          <Button >Login</Button>
-
-            {/* <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu> */}
+          <Button variant="contained" onClick={handleOpen}>Login</Button>
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          {/* <Box sx={{ flexGrow: 0 }}>
           <Button variant="contained">Sign Up</Button>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+          >
+        <Box sx={style}>
+
+        <LoginForm />
+        </Box>
+
+      </Modal>
+  </>
   );
 };
 export default ResponsiveAppBar;
