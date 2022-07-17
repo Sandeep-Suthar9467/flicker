@@ -4,5 +4,6 @@ export type State = {
     flicker: {
       loading: boolean;
       images: FlickerList;
+      imageInfo: any;
     }
 };

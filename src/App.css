@@ -57,6 +57,7 @@
   bottom: 4px;
   right: 2%;
   text-align: center;
+  background-color: 'black';
 }
 
 .containerImg:hover .image {
@@ -69,4 +70,78 @@
 
 .text {
   display: flex;
+}
+.slider {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #282c34;
+}
+
+.image {
+  width: 800px;
+  height: 300px;
+  /* border-radius: 10px; */
+}
+
+.right-arrow {
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  font-size: 3rem;
+  color: #000;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.left-arrow {
+  position: absolute;
+  top: 50%;
+  left: 32px;
+  font-size: 3rem;
+  color: #000;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+  display: inline-block;
+}
+
+.slide.active {
+  opacity: 1;
+  transition-duration: 1s;
+  transform: scale(1.08);
+}
+.card{
+  margin-left: 30;
+  padding: 10;
+}
+.user{
+
+}
+.userdetails{
+  width: 800px;
+  margin-left: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.profile{
+  margin-right: 10px;
+}
+.profile_img{
+  border-radius: 20px;
+
+}
+.user_title,.description{
+  font-size: 12px;
+  /* display: inline-block; */
+  text-align: left;
 }

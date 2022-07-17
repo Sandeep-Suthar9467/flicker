@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import LoginForm from './LoginForm';
+import { Link } from 'react-router-dom';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -24,15 +25,16 @@ const ResponsiveAppBar = (): React.ReactElement => {
   const handleClose = () => setOpen(false);
   return (
     <>
-    <AppBar position="static" style={{}} >
+    <AppBar position='sticky' style={{}} >
       <Container maxWidth="xl" style={{display:'flex',justifyContent: 'center',background: 'black'}}>
         <Toolbar disableGutters  style={{display: 'flex' , width: '80%'}}>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+          
           <Typography
             variant="h6"
             noWrap
+            href=""
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -43,8 +45,10 @@ const ResponsiveAppBar = (): React.ReactElement => {
               textDecoration: 'none',
             }}
           >
+            {/* <Link to={`/`}>  */}
             LOGO
           </Typography>
+          
           {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
             variant="h5"

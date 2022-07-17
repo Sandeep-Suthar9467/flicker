@@ -59,7 +59,7 @@ export interface PhotoEntity {
   url_c: string;
   height_c: number;
   width_c: number;
-  url_l?: string | null;
+  url_l?: string ;
   height_l?: number | null;
   width_l?: number | null;
   pathalias?: string | null;
@@ -76,8 +76,34 @@ export interface Extra {
   explore_date: string;
   next_prelude_interval: number;
 }
-
 export type Explore = {
   type: string,
   payload: string
 };
+export interface ImageDetails {
+  id: string;
+    secret: string;
+    server: string;
+    farm: number;
+    dateuploaded: string;
+    isfavorite: number;
+    license: string;
+    safety_level: string;
+    rotation: number;
+    nsid: string;
+        username: string;
+        realname: string;
+        location: string;
+        iconserver: string;
+        iconfarm: number;
+        path_alias: string;
+        noindexfollow: number;
+        
+        iconurls: {
+            retina: string;
+            large: string;
+            medium: string;
+            small: string;
+            default: string;
+        };
+}
