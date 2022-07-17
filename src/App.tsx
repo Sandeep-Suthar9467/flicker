@@ -1,50 +1,21 @@
 import { ReactElement } from 'react';
 import './App.css';
-import Navbar from './components/Navbar'
-import ImageList from './components/ImageList'
-import Pagination  from './components/Pagination';
-import {
-  BrowserRouter as Router,
-  Routes ,
-  Route,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Explore from './pages/Explore';
+import NotFound from './pages/NotFound';
+import MyAccount from './pages/MyAccount';
+import { useSelector } from 'react-redux';
 import ImageInfo from './components/ImageInfo';
 
 const App = (): ReactElement => {
+  const isLoggedIn = useSelector((state: any) => state?.flicker?.isLoggedIn);
   return (
-    <Router>
-    {/* <div className="App">
-      <Navbar />
-      <div style={{display: 'flex' , justifyContent: 'center'}}>
-      <ImageList/>
-      </div>
-      <div style={{display: 'flex' , justifyContent: 'center',marginBottom: 10}}>
-      <Pagination />
-      </div>
-    </div> */}
-    <div className="App">
-      <Navbar />
-      
-      <Routes >
-       <Route path="/photos/:id/:owner" element={<ImageInfo/>}/>
-          
-          <Route path="/" element ={            
-
-          
-          <div><div style={{ display: 'flex', justifyContent: 'center' }}>
-              <ImageList />
-
-            </div><div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-                <Pagination />
-              </div>
-            </div> 
-            
-              } />
-           
-        </Routes >
-</div>
-    </Router>
-
+      <Routes>
+        <Route path="/" element={<Explore />} />
+        <Route path="/photos/:id/:owner" element={<ImageInfo/>}/>
+        <Route path="/user" element={ isLoggedIn ? <MyAccount /> : <Navigate to="/" /> } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
   );
 }
 

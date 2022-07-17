@@ -1,17 +1,26 @@
 import React, { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { onLoginSuccess } from "../reducer";
 import "./login.css";
 
 interface ErrorMssg{
 name: string;
 message: string;
 
+};
+
+type closeFunction = () => void;
+interface Props {
+  children?: React.ReactNode;
+  handleClose: closeFunction;
 }
 
-function App() {
+const LoginForm = (props: Props) => {
   // React States
   const [errorMessages, setErrorMessages] = useState<ErrorMssg>({name: '' ,message: ''});
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // User Login info
   const database = [
@@ -45,7 +54,11 @@ function App() {
         // Invalid password
         setErrorMessages({ name: "pass", message: errors.pass });
       } else {
-        setIsSubmitted(true);
+        props.handleClose();
+        dispatch(onLoginSuccess());
+        setTimeout(() => {
+          navigate("/user");
+        }, 0);
       }
     } else {
       // Username not found
@@ -83,9 +96,9 @@ function App() {
   return (
       <div className="login-form">
         <div className="title">LogIn</div>
-        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+        { renderForm }
       </div>
   );
 }
 
-export default App;
+export default LoginForm;
