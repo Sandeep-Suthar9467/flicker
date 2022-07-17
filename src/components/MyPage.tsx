@@ -44,11 +44,11 @@ export const MyPage = () => {
     setValue(newValue);
   };
   return (
-    <div>
-      <div>
-        <label>Account</label>
-      </div>
-      <div>
+    <Box width={"80%"}>
+      <Box textAlign={"left"} margin="18px">
+        <Typography fontSize="28px" fontWeight={"bold"}>User0789</Typography>
+      </Box>
+      <div >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="My Album" {...a11yProps(0)} />
@@ -62,6 +62,6 @@ export const MyPage = () => {
           Item Two
         </TabPanel>
       </div>
-    </div>
+    </Box>
   )
 }

@@ -1,10 +1,11 @@
+import Box from "@mui/material/Box";
 import { MyPage } from "../components/MyPage";
 
 const MyAccount = () => {
     return (
-        <div>
+        <Box display={"flex"} flexDirection="column" alignItems="center" width={"100%"}>
             <MyPage />
-        </div>
+        </Box>
     )
 };
 
