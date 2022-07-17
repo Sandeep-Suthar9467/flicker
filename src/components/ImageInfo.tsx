@@ -2,15 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchImage } from "../reducer";
 import { State } from "../types/redux";
-// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useParams } from "react-router-dom";
-// import { Card, CardHeader } from '@mui/material';
-// import Avatar from '@mui/material/Avatar';
-// import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
-// import { red } from '@mui/material/colors';
-// import photo from "./imagedetails";
+
 export default function ImageInfo() {
   const itemData = useSelector((state:State) => state.flicker.imageInfo).photo
   // const itemData = photo[0].photo;
@@ -33,8 +26,8 @@ export default function ImageInfo() {
       <section className="slider">
         <div className="slide active">
           <img
-            src={itemData?.HTMLMETA["og:image"]}
-            alt="travel image"
+            src={itemData?.sizes?.size[8].source}
+            alt="travel"
             className="image"
           />
         </div>
@@ -48,14 +41,12 @@ export default function ImageInfo() {
                 height={40}
                 width={40}
                 className="profile_img"
+                alt=""
               />
             </div>
             <div className="user_title">
               <div>{itemData.owner.username}</div>
-              <div>{itemData.HTMLMETA["og:title"]}</div>
-              <p className="description">
-                {itemData.HTMLMETA["og:description"]}
-              </p>
+              <div>{itemData.title?._content}</div>
             </div>
           </div>
         </div>
