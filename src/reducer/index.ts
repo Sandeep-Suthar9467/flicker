@@ -5,7 +5,8 @@ export const counterSlice = createSlice({
   initialState: {
     loading: false,
     images: [],
-    page: 1
+    page: 1,
+    isLoggedIn: false
   },
   reducers: {
     fetchImages: (state, action) => {
@@ -13,10 +14,13 @@ export const counterSlice = createSlice({
     },
     onSuccessImages: (state, action) => {
         return {...state, loading: false, images: action.payload };
-    }
+    },
+    onLoginSuccess: (state) => {
+      return {...state, loading: false, isLoggedIn: true };
+    },
   },
 });
 
-export const { fetchImages, onSuccessImages } = counterSlice.actions
+export const { fetchImages, onSuccessImages, onLoginSuccess } = counterSlice.actions
 
 export default counterSlice.reducer;

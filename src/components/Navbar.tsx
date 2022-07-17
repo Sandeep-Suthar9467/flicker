@@ -82,7 +82,7 @@ const ResponsiveAppBar = (): React.ReactElement => {
           >
         <Box sx={style}>
 
-        <LoginForm />
+        <LoginForm handleClose={handleClose}/>
         </Box>
 
       </Modal>
