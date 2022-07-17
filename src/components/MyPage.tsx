@@ -3,6 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Album from './Album';
+import Photos from './Photos';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,10 +58,10 @@ export const MyPage = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          Item One
+          <Album />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <Photos />
         </TabPanel>
       </div>
     </Box>
