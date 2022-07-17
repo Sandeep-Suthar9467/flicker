@@ -1,10 +1,7 @@
-import { Box } from "@mui/material"
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import IconButton from '@mui/material/IconButton';
-import PlaylistAddCircleIcon from '@mui/icons-material/PlaylistAddCircle';
-import Tooltip from '@mui/material/Tooltip';
+import AddAlbum from './AddAlbum';
 
 const albumMock = [{
     name: 'Album 1',
@@ -31,13 +28,7 @@ const albumMock = [{
 const Album = () => {
     return (
         <>
-            <Box display={"flex"} justifyContent="end">
-                <Tooltip title="Add Album">
-                    <IconButton color="primary" aria-label="upload picture" component="label">
-                        <PlaylistAddCircleIcon fontSize="large" />
-                    </IconButton>
-                </Tooltip>
-            </Box>
+            <AddAlbum />
             {
                 <ImageList sx={{ width: 300, height: 200 }}>
                     {albumMock.map((item, idx) => (
