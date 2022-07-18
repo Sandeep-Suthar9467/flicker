@@ -144,4 +144,15 @@
   font-size: 12px;
   /* display: inline-block; */
   text-align: left;
+  line-height: 14px;
+  white-space: pre-wrap;
+}
+.comment_profile{
+  display: flex;
+  flex-direction: row;
+
+}
+.cmmt_content{
+  white-space: pre-wrap;
+
 }

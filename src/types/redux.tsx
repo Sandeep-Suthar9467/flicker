@@ -5,5 +5,7 @@ export type State = {
       loading: boolean;
       images: FlickerList;
       imageInfo: any;
+      isLoggedIn: boolean;
+      comments: any;
     }
 };

@@ -7,8 +7,9 @@ import Modal from '@mui/material/Modal';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import LoginForm from './LoginForm';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { onLogoutSuccess } from '../reducer';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -25,6 +26,17 @@ const ResponsiveAppBar = (): React.ReactElement => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout =() =>{
+    dispatch(onLogoutSuccess());
+        setTimeout(() => {
+          navigate("/");
+        }, 0);
+  }
+
+
   return (
     <>
       <AppBar position="static" style={{}} >
@@ -35,7 +47,11 @@ const ResponsiveAppBar = (): React.ReactElement => {
               variant="h6"
               noWrap
               component="a"
-              href="/"
+              // href="/"
+              onClick={()=>{
+                navigate("/");
+
+              }}
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -67,23 +83,15 @@ const ResponsiveAppBar = (): React.ReactElement => {
             >
               LOGO
             </Typography>
-            <Box marginLeft="15px" marginRight={"15px"}>
-              <Link to="/" style={{ color: 'white' }}>Home</Link>
-            </Box>
-            {
-              isLoggedIn ?
-                <Box marginLeft="15px" marginRight={"15px"}>
-                  <Link to="/user" style={{ color: 'white' }}>Account</Link>
-                </Box> : null
-            }
-
-            {
-              !isLoggedIn ?
+            
+              
                 <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                  <Button variant="contained" onClick={handleOpen}>Login</Button>
+{    !isLoggedIn ?             <Button variant="contained" onClick={handleOpen}>Login</Button> :
+ <Button variant="contained" onClick={logout}>Logout</Button>
+}
                 </Box>
-                : null
-            }
+                
+            
             {/* <Box sx={{ flexGrow: 0 }}>
           <Button variant="contained">Sign Up</Button>
           </Box> */}
