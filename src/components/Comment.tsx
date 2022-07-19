@@ -28,7 +28,7 @@ export default function Comment() {
     // let len = comment.comments.comment.length
     // let commentsData = comment.comments.comment
 
-    const commentsData=useSelector((state:State) => state.flicker.comments).comments.comment
+    const commentsData=useSelector((state:State) => state.flicker?.comments)?.comments?.comment
     if (!commentsData || !Object.keys(commentsData).length )
     return (
       <>

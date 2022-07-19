@@ -25,7 +25,7 @@ const callImageApi = (id: string): Promise<Photos> => {
 const callCommentApi = (id: string): Promise<Photos> => {
    return fetch(
 // `https://api.flickr.com/services/rest?photo_id=${id}&viewerNSID=&method=flickr.photos.getHtmlMeta&csrf=&api_key=0809600f91ad7cc31a42f27af432152a&format=json&hermes=1&hermesClient=1&reqId=ef66d6cb-4ad0-4983-bad6-f889fbf76fc0&nojsoncallback=1`)                   
-`https://api.flickr.com/services/rest?photo_id=${id}&sort=date-posted-desc&extras=icon_urls&expand_bbml=1&use_text_for_links=1&secure_image_embeds=1&bbml_need_all_photo_sizes=1&primary_photo_longest_dimension=405&offset=0&limit=20&viewerNSID=&method=flickr.photos.comments.getList&csrf=&api_key=d0fd690167382d0e098eca81430c0ea0&format=json&hermes=1&hermesClient=1&reqId=d9406c42-0f7e-4cd5-9426-7717213d0c8b&nojsoncallback=1`)
+`https://api.flickr.com/services/rest?photo_id=${id}&sort=date-posted-desc&extras=icon_urls&expand_bbml=1&use_text_for_links=1&secure_image_embeds=1&bbml_need_all_photo_sizes=1&primary_photo_longest_dimension=405&offset=0&limit=20&viewerNSID=&method=flickr.photos.comments.getList&csrf=&api_key=${FLICKER_API_KEY}&format=json&nojsoncallback=1`)
 .then((res) => res.json())
                    .then((json) => {
                        console.log(json);
