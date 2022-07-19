@@ -41,11 +41,12 @@ export default function Comment() {
         {commentsData.map((cmmt: { _content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; iconurls: { default: string | undefined; }; authorname: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; pro_badge: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; datecreate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; },index: any)=>{
         let time = dayjs(156000 * 1000)
         return (
-            <>  <Grid container wrap="nowrap" spacing={1}>
-                <Grid item>
+            <div key={index} style={{display: 'flex',flexDirection: 'column',padding: 5}}>  
+            <Grid container wrap="nowrap" spacing={1}>
+                <Grid style={{marginRight: 8}}>
                     <Avatar alt="Remy Sharp" src={cmmt.iconurls.default} />
                 </Grid>
-                <Grid justifyContent="left" item xs zeroMinWidth>
+                <Grid justifyContent="left" style={{margin:0}} xs zeroMinWidth>
                     <div className='comment_profile'>
                     <span style={{ margin: 0, textAlign: "left" ,marginRight: 10}}>{cmmt.authorname}</span>
                     <span style={{ margin: 0, textAlign: "left" ,marginRight: 10 ,color: '#006dac'}}>{cmmt.pro_badge}</span>
@@ -54,12 +55,14 @@ export default function Comment() {
                         { time.toISOString()}
                     </span>
                     </div>
-                    <p style={{ textAlign: "left" }} className='cmmt_content'>
+                    <p style={{ textAlign: "left",margin: 0,fontSize: 12 }} className='cmmt_content'>
                        {cmmt._content}
                     </p>
                     
                 </Grid>
-            </Grid><Divider variant="fullWidth" style={{ margin: "30px 0" }} /></>
+            </Grid>
+            <Divider variant="fullWidth" style={{ margin: "10px 0" ,color: 'blue'}} />
+            </div>
    ) })   
        }
       </Paper>
