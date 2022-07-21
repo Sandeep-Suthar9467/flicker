@@ -10,37 +10,6 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import DoneIcon from '@mui/icons-material/Done';
 import { useSelector } from 'react-redux';
 import { State } from '../types/redux';
-const albumMock = [{
-    name: 'Album 1',
-    photos: [{
-        id: '1',
-        url: 'https://picsum.photos/200/400',
-        author: 'User0789'
-    },
-    {
-        id: '2',
-        url: 'https://picsum.photos/200/500',
-        author: 'User0789'
-    }]
-}, {
-    name: 'Album 2',
-    photos: [{
-        id: '3',
-        url: 'https://picsum.photos/200/200',
-        author: 'User0789'
-    },
-
-    {
-        id: '4',
-        url: 'https://picsum.photos/200/300',
-        author: 'User0789'
-    },
-    {
-        id: '5',
-        url: 'https://picsum.photos/200/300',
-        author: 'User0789'
-    }]
-}]
 
 const Photos = () => {
     const photos = useSelector((state:State) => state.flicker.photos);
