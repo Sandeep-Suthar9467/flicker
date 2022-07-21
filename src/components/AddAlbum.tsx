@@ -8,6 +8,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import DoneIcon from '@mui/icons-material/Done';
+import { useSelector } from 'react-redux';
+import { State } from '../types/redux';
 const albumMock = [{
     name: 'Album 1',
     photos: [{
@@ -41,6 +43,7 @@ const albumMock = [{
 }]
 
 const Photos = () => {
+    const photos = useSelector((state:State) => state.flicker.photos);
     const [selected, setSelected] = useState<String[]>([]);
     const addPhoto = (id: string) => {
         if(selected.includes(id)) {
@@ -53,20 +56,19 @@ const Photos = () => {
         <>
             {
                 <ImageList sx={{ width: '100%', height: '200px' }} cols={3}>
-                    {albumMock.map((item, idx) => (
-                        item.photos.map((photo, idx) => (
+                    {photos.map((item, idx) => (
                             <ImageListItem key={idx}
-                                onClick={() => addPhoto(photo.id)}
+                                onClick={() => addPhoto(item.url)}
                                 sx={{ width: 'auto' }}>
                                 <img
                                     style={{ height: '80px' }}
-                                    src={`${photo.url}?w=248&fit=crop&auto=format`}
-                                    srcSet={`${photo.url}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                    src={`${item.url}`}
+                                    srcSet={`${item.url}`}
                                     alt=""
                                     loading="lazy"
                                 />
                                 {
-                                    selected.includes(photo.id) && (
+                                    selected.includes(item.url) && (
                                         <ImageListItemBar
                                             sx={{
                                                 background:
@@ -86,7 +88,6 @@ const Photos = () => {
                                     )
                                 }
                             </ImageListItem>
-                        ))
                     ))}
                 </ImageList>
 
