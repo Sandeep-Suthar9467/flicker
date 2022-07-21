@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect,useState } from 'react';
+import { useEffect } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -8,22 +8,11 @@ import { Box, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchImage, fetchImages } from '../reducer';
+import { fetchImages } from '../reducer';
 import { State } from '../types/redux';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  // width: 400,
-  // bgcolor: 'background.paper',
-  // border: '2px solid #000',
-  // boxShadow: 24,
-  // p: 4,
-}
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
@@ -34,10 +23,7 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 export default function QuiltedImageList() {
-  // const [imageObject,setImageObject] = useState({
-  //   url_l: ''
-  // })
-  const [open, setOpen] = useState<boolean>(false);
+
   const itemData = useSelector((state:State) => state.flicker.images)
   const loading = useSelector((state:State) => state.flicker.loading)
   const theme = useTheme();
@@ -46,23 +32,17 @@ export default function QuiltedImageList() {
   useEffect(() => {
     dispatch(fetchImages('1'));
   }, []); 
-  const onClickHandler = (item: any) => {
-    // setImageObject(item)
-    setOpen(true)
-    // dispatch(fetchImage(item));
-    // setSelected(id); 
-    // window.open(url, "_blank");
-} 
+
 if (loading) {
   return <Loading /> 
 }
-const handleClose = () => setOpen(false);
 // console.log(imageObject)
+  
   if( !itemData || !itemData.photos?.photo?.length) return <><h1>no Data</h1></>;
   return (
     <>
     <ImageList
-      sx={{ width: '80%'  }}
+      sx={{ width: '80%',height: '100%'  }}
       variant="quilted"
       cols={matches ? 4 : 2}
       rowHeight={121}
@@ -75,8 +55,6 @@ const handleClose = () => setOpen(false);
             {...srcset(item.url_w, 121)}
             alt={item.title}
             loading="lazy"
-            onClick ={()=>onClickHandler(item)}
-
           /> </Link>:
           <Skeleton variant="rectangular" width={265} height={121} />          }
           {item ?<div className="middle">
