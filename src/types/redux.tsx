@@ -1,6 +1,9 @@
 import { Album } from "./album";
 import { FlickerList } from "./flicker";
 
+export type Photo = {
+  url: string
+}[];
 export type State = {
     flicker: {
       loading: boolean;
@@ -9,5 +12,6 @@ export type State = {
       isLoggedIn: boolean;
       comments: any;
       albumsInfo: Album | undefined
+      photos: Photo
     }
 };

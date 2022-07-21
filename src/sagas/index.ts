@@ -1,7 +1,8 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects'
 import { FLICKER_API_KEY } from '../constant';
 import { fetchImage, fetchImages, onSuccessImage,
-   onSuccessImages, fetchAlbumDetails, onSuccessAlbumDetails } from "../reducer";
+   onSuccessImages, fetchAlbumDetails,
+   onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos } from "../reducer";
 import { Album } from '../types/album';
 import { Explore, FlickerList, Photos } from '../types/flicker';
 
@@ -66,10 +67,37 @@ function* fetchAlbumSaga(action: Explore) {
    }
 };
 
+function* fetchPhotoSaga(action: Explore) {
+   try {
+      // const albums: Album = yield call(fetchAlbums);
+      const album = [{
+             url: 'https://picsum.photos/200/400'
+         },
+         {
+             url: 'https://picsum.photos/200/500',
+             author: 'User0789'
+         },
+         {
+         
+             url: 'https://picsum.photos/200/200',
+          
+         },
+         {
+             url: 'https://picsum.photos/200/300',
+          
+         }
+     ];
+      yield put(onSuccessPhotos(album));
+   } catch (e) {
+      console.log(e);
+   }
+};
+
 function* mySaga() {
    yield all([takeLatest(fetchImages.type, fetchImagesSaga),
    takeLatest(fetchImage.type, fetchImageSaga),
-   takeLatest(fetchAlbumDetails.type, fetchAlbumSaga)
+   takeLatest(fetchAlbumDetails.type, fetchAlbumSaga),
+   takeLatest(fetchPhotos.type, fetchPhotoSaga)
    ]);
 }
 

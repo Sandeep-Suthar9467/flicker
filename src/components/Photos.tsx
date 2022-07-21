@@ -4,54 +4,47 @@ import ImageListItem from '@mui/material/ImageListItem';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-
-const albumMock = [{
-    name: 'Album 1',
-    photos: [{
-        url: 'https://picsum.photos/200/400',
-        author: 'User0789'
-    },
-    {
-        url: 'https://picsum.photos/200/500',
-        author: 'User0789'
-    }]
-}, {
-    name: 'Album 2',
-    photos: [{
-        url: 'https://picsum.photos/200/200',
-        author: 'User0789'
-    },
-    {
-        url: 'https://picsum.photos/200/300',
-        author: 'User0789'
-    }]
-}]
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../types/redux";
+import { useEffect } from "react";
+import { fetchPhotos, uploadImage } from "../reducer";
 
 const Photos = () => {
+    const photos = useSelector((state:State) => state.flicker.photos)
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchPhotos());
+    }, [])
+
+    const pickImage = (e:  React.ChangeEvent<HTMLInputElement>) => {
+        const target= e.target;
+        const file: File = (target.files as FileList)[0];
+        const url = URL.createObjectURL(file);
+        console.log(url);
+        dispatch(uploadImage(url));
+    }
     return (
         <>
             <Box display={"flex"} justifyContent="end">
                 <Tooltip title="Upload Photo">
                     <IconButton color="primary" aria-label="upload picture" component="label">
-                        <input hidden accept="image/*" type="file" />
+                        <input hidden accept="image/*" type="file" onChange={pickImage}/>
                         <FileUploadIcon fontSize="large" />
                     </IconButton>
                 </Tooltip>
             </Box>
             {
-                <ImageList sx={{ width: '100%', height: '200px' }} cols={4}>
-                    {albumMock.map((item, idx) => (
-                        item.photos.map((photo, idx) => (
+                <ImageList sx={{ width: '100%', display: 'flex', flexWrap: 'wrap' }} cols={4}>
+                    {photos?.map((item, idx) => (
                             <ImageListItem key={idx} sx={{ width: 260 }}>
                                 <img
                                     style={{ height: '200px' }}
-                                    src={`${photo.url}?w=248&fit=crop&auto=format`}
-                                    srcSet={`${photo.url}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                    src={`${item.url}`}
+                                    srcSet={`${item.url}`}
                                     alt=""
                                     loading="lazy"
                                 />
                             </ImageListItem>
-                        ))
                     ))}
                 </ImageList>
 

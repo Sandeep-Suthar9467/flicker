@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Photo } from '../types/redux';
 
 
 
@@ -12,7 +13,8 @@ export const counterSlice = createSlice({
     id:null,
     imageInfo: {},
     isLoggedIn: false,
-    comments: []
+    comments: [],
+    photos: [] as Photo
   },
   reducers: {
     fetchImages: (state, action) => {
@@ -38,10 +40,20 @@ export const counterSlice = createSlice({
     },
     onSuccessAlbumDetails: (state,action)=>{
       return {...state, loading: false, albumsInfo: action.payload };
+    },
+    fetchPhotos: (state)=>{
+      return {...state,loading: true };
+    },
+    onSuccessPhotos: (state,action)=>{
+      return {...state, loading: false, photos: action.payload };
+    },
+    uploadImage: (state, action)=>{
+      return {...state, loading: false, photos: [...state.photos, {url: action.payload}] };
     }
   },
 });
 
 export const { fetchImages, onSuccessImages,fetchImage,
-  onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails, onSuccessAlbumDetails } = counterSlice.actions
+  onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails,
+  onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage } = counterSlice.actions
 export default counterSlice.reducer;
