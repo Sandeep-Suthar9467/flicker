@@ -33,8 +33,15 @@ export const counterSlice = createSlice({
     onLogoutSuccess: (state) => {
       return {...state, loading: false, isLoggedIn: false };
     },
+    fetchAlbumDetails: (state)=>{
+      return {...state,loading: true };
+    },
+    onSuccessAlbumDetails: (state,action)=>{
+      return {...state, loading: false, albumsInfo: action.payload };
+    }
   },
 });
 
-export const { fetchImages, onSuccessImages,fetchImage,onSuccessImage ,onLoginSuccess,onLogoutSuccess} = counterSlice.actions
+export const { fetchImages, onSuccessImages,fetchImage,
+  onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails, onSuccessAlbumDetails } = counterSlice.actions
 export default counterSlice.reducer;

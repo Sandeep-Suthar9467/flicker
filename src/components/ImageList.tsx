@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchImage, fetchImages } from '../reducer';
 import { State } from '../types/redux';
 import { Link } from 'react-router-dom';
+import Loading from './Loading';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -51,7 +52,10 @@ export default function QuiltedImageList() {
     // dispatch(fetchImage(item));
     // setSelected(id); 
     // window.open(url, "_blank");
-}   
+} 
+if (loading) {
+  return <Loading /> 
+}
 const handleClose = () => setOpen(false);
 // console.log(imageObject)
   if( !itemData || !itemData.photos?.photo?.length) return <><h1>no Data</h1></>;
