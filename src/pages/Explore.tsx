@@ -6,6 +6,7 @@ import { State } from '../types/redux';
 
 const Explore = (): ReactElement => {
   const itemData = useSelector((state:State) => state.flicker.images)
+  const loading = useSelector((state:State) => state.flicker.loading)
   return (
     <>
       <div style={{display: 'flex' , justifyContent: 'center'}}>
@@ -15,7 +16,7 @@ const Explore = (): ReactElement => {
       <div style={{display: 'flex' , justifyContent: 'center',marginBottom: 10}}>
 
       {
-        !itemData || !itemData.photos?.photo?.length ?
+        !itemData || !itemData.photos?.photo?.length || loading ?
         null : <Pagination />
       }
       </div>

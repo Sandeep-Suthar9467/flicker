@@ -17,12 +17,10 @@ interface Props {
 }
 
 const LoginForm = (props: Props) => {
-  // React States
   const [errorMessages, setErrorMessages] = useState<ErrorMssg>({name: '' ,message: ''});
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // User Login info
   const database = [
     {
       username: "user1",
@@ -40,18 +38,13 @@ const LoginForm = (props: Props) => {
   };
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
-    //Prevent page reload
     event.preventDefault();
 
     var { uname, pass } = document.forms[0];
-
-    // Find user login info
     const userData = database.find((user) => user.username === uname.value);
 
-    // Compare user info
     if (userData) {
       if (userData.password !== pass.value) {
-        // Invalid password
         setErrorMessages({ name: "pass", message: errors.pass });
       } else {
         props.handleClose();
@@ -61,18 +54,15 @@ const LoginForm = (props: Props) => {
         }, 0);
       }
     } else {
-      // Username not found
       setErrorMessages({ name: "uname", message: errors.uname });
     }
   };
 
-  // Generate JSX code for error message
   const renderErrorMessage = (name:string) =>
     name === errorMessages.name && (
       <div className="error">{errorMessages.message}</div>
     );
 
-  // JSX code for login form
   const renderForm = (
     <div className="form">
       <form onSubmit={handleSubmit}>

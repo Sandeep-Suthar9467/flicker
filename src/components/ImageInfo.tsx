@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchImage } from "../reducer";
@@ -5,20 +6,12 @@ import { State } from "../types/redux";
 import { useParams } from "react-router-dom";
 import Comment from "./Comment";
 import Loading from "./Loading";
-// import { Card, CardHeader } from '@mui/material';
-// import Avatar from '@mui/material/Avatar';
-// import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
-// import { red } from '@mui/material/colors';
-// import photo from "./imagedetails";
 export default function ImageInfo() {
   const itemData = useSelector((state:State) => state.flicker.imageInfo).photo
-  // const itemData = photo[0].photo;
   const loading = useSelector((state:State) => state.flicker.loading)
   const params = useParams();
   const dispatch = useDispatch();
   const id = params.id;
-  // const owner = params.owner
   useEffect(() => {
     dispatch(fetchImage(id));
   }, []);
@@ -39,7 +32,7 @@ export default function ImageInfo() {
         <div className="slide active">
           <img
             src={itemData?.sizes.size[itemData?.sizes.size.length-1].source}
-            alt="travel image"
+            alt="travel"
             className="image"
           />
         </div>

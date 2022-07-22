@@ -69,7 +69,6 @@ function* fetchAlbumSaga(action: Explore) {
 
 function* fetchPhotoSaga(action: Explore) {
    try {
-      // const albums: Album = yield call(fetchAlbums);
       const album = [{
              url: 'https://picsum.photos/200/400'
          },

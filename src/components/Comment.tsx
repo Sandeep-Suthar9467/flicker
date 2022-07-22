@@ -20,7 +20,7 @@ export default function Comment() {
                     {commentsData.map((cmmt: { _content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; iconurls: { default: string | undefined; }; authorname: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; pro_badge: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; datecreate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, index: any) => {
                         let time = dayjs(156000 * 1000)
                         return (
-                            <>  <Grid container wrap="nowrap" spacing={1}>
+                            <div key={index}>  <Grid container wrap="nowrap" spacing={1}>
                                 <Grid item>
                                     <Avatar alt="Remy Sharp" src={cmmt.iconurls.default} />
                                 </Grid>
@@ -37,7 +37,7 @@ export default function Comment() {
                                     </p>
 
                                 </Grid>
-                            </Grid><Divider variant="fullWidth" style={{ margin: "30px 0" }} /></>
+                            </Grid><Divider variant="fullWidth" style={{ margin: "30px 0" }} /></div>
                         )
                     })
                     }

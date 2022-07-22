@@ -36,7 +36,6 @@ export default function QuiltedImageList() {
 if (loading) {
   return <Loading /> 
 }
-// console.log(imageObject)
   
   if( !itemData || !itemData.photos?.photo?.length) return <><h1>no Data</h1></>;
   return (
