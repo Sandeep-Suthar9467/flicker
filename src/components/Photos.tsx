@@ -6,15 +6,11 @@ import Tooltip from '@mui/material/Tooltip';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../types/redux";
-import { useEffect } from "react";
-import { fetchPhotos, uploadImage } from "../reducer";
+import { uploadImage } from "../reducer";
 
 const Photos = () => {
     const photos = useSelector((state:State) => state.flicker.photos)
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(fetchPhotos());
-    }, [])
 
     const pickImage = (e:  React.ChangeEvent<HTMLInputElement>) => {
         const target= e.target;

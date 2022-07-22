@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Album from './Album';
 import Photos from './Photos';
+import { useDispatch } from 'react-redux';
+import { fetchAlbumDetails, fetchPhotos } from '../reducer';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,6 +43,12 @@ function a11yProps(index: number) {
 
 export const MyPage = () => {
   const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchAlbumDetails());
+    dispatch(fetchPhotos());
+}, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

@@ -29,8 +29,7 @@ export default function Comment() {
                                         <span style={{ margin: 0, textAlign: "left", marginRight: 10 }}>{cmmt.authorname}</span>
                                         <span style={{ margin: 0, textAlign: "left", marginRight: 10, color: '#006dac' }}>{cmmt.pro_badge}</span>
                                         <span style={{ textAlign: "left", color: "gray" }}>
-
-                                            {time.toISOString()}
+                                            {dayjs(time).format('DD/MM/YYYY')}
                                         </span>
                                     </div>
                                     <p style={{ textAlign: "left" }} className='cmmt_content'>

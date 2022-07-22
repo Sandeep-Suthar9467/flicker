@@ -31,11 +31,7 @@ const albumMock = [{
 }]
 
 const Album = () => {
-    const dispatch = useDispatch();
     const { loading, albumsInfo } = useSelector((state: State) => state.flicker)
-    useEffect(() => {
-        dispatch(fetchAlbumDetails());
-    }, []);
     if(loading) {
         return <Loading />
     }
