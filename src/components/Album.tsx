@@ -1,34 +1,10 @@
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAlbumDetails } from '../reducer';
+import { useSelector } from 'react-redux';
 import { State } from '../types/redux';
 import AddAlbum from './AddAlbum';
 import Loading from './Loading';
-
-const albumMock = [{
-    name: 'Album 1',
-    photos: [{
-        url: 'https://picsum.photos/200',
-        author: 'User0789'
-    },
-    {
-        url: 'https://picsum.photos/200',
-        author: 'User0789'
-    }]
-}, {
-    name: 'Album 2',
-    photos: [{
-        url: 'https://picsum.photos/200/200',
-        author: 'User0789'
-    },
-    {
-        url: 'https://picsum.photos/200/300',
-        author: 'User0789'
-    }]
-}]
 
 const Album = () => {
     const { loading, albumsInfo } = useSelector((state: State) => state.flicker)
@@ -39,21 +15,22 @@ const Album = () => {
         <>
             <AddAlbum />
             {
-                albumsInfo?.photosets?.photoset ?
-                <ImageList sx={{ width: 300, height: 200 }}>
+                albumsInfo?.length ?
+                <ImageList style={{display: 'flex', flexWrap: 'wrap'}}>
                     {
-                         albumsInfo?.photosets?.photoset?.map((album, idx) => {
+                         albumsInfo?.map((album, idx) => {
                             return (
                                 <ImageListItem key={idx}>
                                 <img
-                                    src={`${album.coverphoto_url.h}?w=248&fit=crop&auto=format`}
-                                    srcSet={`${album.coverphoto_url.h}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                    src={`${album.photos[0].url}`}
+                                    srcSet={`${album.photos[0].url}`}
                                     alt=""
                                     loading="lazy"
+                                    style={{height: '200px', width: '300px'}}
                                 />
                                 <ImageListItemBar
-                                    title={album.title._content}
-                                    subtitle={`Photos: ${album.count_photos}`}
+                                    title={album.name}
+                                    subtitle={`Photos: ${album.photos.length}`}
                                 />
                             </ImageListItem>
                             )

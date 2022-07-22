@@ -8,18 +8,23 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import DoneIcon from '@mui/icons-material/Done';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../types/redux';
+import { addAlbum } from '../reducer';
 
-const Photos = () => {
+type PhotoForm = {
+    selected: string[];
+    onClickSelect: any
+}
+const Photos = (props: PhotoForm) => {
+    const { selected, onClickSelect } = props;
     const photos = useSelector((state:State) => state.flicker.photos);
-    const [selected, setSelected] = useState<String[]>([]);
     const addPhoto = (id: string) => {
         if(selected.includes(id)) {
-            setSelected(selected.filter(item => item !== id));
+            onClickSelect(selected.filter(item => item !== id));
             return;
         }
-        setSelected([...selected, id]);
+        onClickSelect([...selected, id]);
     }
     return (
         <>
@@ -78,9 +83,29 @@ const style = {
 };
 
 const AddAlbum = () => {
+    const dispatch = useDispatch();
+    const [selected, setSelected] = useState<string[]>([]);
+    const [fields, setFields] = useState({ albumName: '', description: '' });
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const reset = () => {
+        setSelected([]);
+        setFields({ albumName: '', description: '' });
+    }
+    const submitAlbum = () => {
+        if(!fields.albumName || !selected.length) {
+            return;
+        }
+        console.log(fields, selected);
+        dispatch(addAlbum({
+            name: fields.albumName,
+            description: fields.description,
+            photos: selected.map((url) => ({ url, author: 'user007'}))
+        }));
+        handleClose();
+        reset();
+    }
     return (
         <>
             <Box display={"flex"} justifyContent="end">
@@ -100,22 +125,26 @@ const AddAlbum = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <div className="form">
+                    <form className="form">
                         <div className="input-container">
                             <label>Album Name </label>
-                            <input type="text" name="albumName" required />
+                            <input type="text" name="albumName" 
+                            onChange={(e) => setFields({ ...fields, albumName: e.target.value })}
+                            value={fields.albumName} required />
                         </div>
                         <div className="input-container">
                             <label>Description </label>
-                            <input type="text" name="description" required />
+                            <input type="text" name="description" 
+                            onChange={(e) => setFields({ ...fields, description: e.target.value })}
+                            value={fields.description} required />
                         </div>
                         <div className='input-container'>
-                            <Photos />
+                            <Photos selected={selected} onClickSelect={setSelected}/>
                         </div>
                         <div className="button-container">
-                            <input type="submit" />
+                            <input type="submit" onClick={submitAlbum} />
                         </div>
-                    </div>
+                    </form>
                 </Box>
 
             </Modal>

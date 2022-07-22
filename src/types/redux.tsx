@@ -1,4 +1,4 @@
-import { Album } from "./album";
+import { Album, AlbumMock } from "./album";
 import { FlickerList } from "./flicker";
 
 export type Photo = {
@@ -11,7 +11,7 @@ export type State = {
       imageInfo: any;
       isLoggedIn: boolean;
       comments: any;
-      albumsInfo: Album | undefined
+      albumsInfo: AlbumMock| undefined
       photos: Photo
     }
 };

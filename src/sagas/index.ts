@@ -60,8 +60,28 @@ function* fetchImageSaga(action: Explore) {
 }
 function* fetchAlbumSaga(action: Explore) {
    try {
-      const albums: Album = yield call(fetchAlbums);
-      yield put(onSuccessAlbumDetails(albums));
+      yield call(fetchAlbums);
+      yield put(onSuccessAlbumDetails([{
+         name: 'Album 1',
+         photos: [{
+             url: 'https://picsum.photos/200',
+             author: 'User0789'
+         },
+         {
+             url: 'https://picsum.photos/200',
+             author: 'User0789'
+         }]
+     }, {
+         name: 'Album 2',
+         photos: [{
+             url: 'https://picsum.photos/200/200',
+             author: 'User0789'
+         },
+         {
+             url: 'https://picsum.photos/200/300',
+             author: 'User0789'
+         }]
+     }]));
    } catch (e) {
       console.log(e);
    }

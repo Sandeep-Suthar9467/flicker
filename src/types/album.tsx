@@ -55,3 +55,10 @@ export interface Album {
     t: string;
   }
   
+  export type AlbumMock = {
+    name: string;
+    photos: {
+        url: string;
+        author: string;
+    }[];
+}[]

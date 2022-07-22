@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { AlbumMock } from '../types/album';
 import { Photo } from '../types/redux';
 
 
@@ -14,7 +15,8 @@ export const counterSlice = createSlice({
     imageInfo: {},
     isLoggedIn: false,
     comments: [],
-    photos: [] as Photo
+    photos: [] as Photo,
+    albumsInfo:[] as AlbumMock
   },
   reducers: {
     fetchImages: (state, action) => {
@@ -49,11 +51,14 @@ export const counterSlice = createSlice({
     },
     uploadImage: (state, action)=>{
       return {...state, loading: false, photos: [...state.photos, {url: action.payload}] };
+    },
+    addAlbum: (state, action)=>{
+      return {...state, loading: false, albumsInfo: [...state.albumsInfo, action.payload] };
     }
   },
 });
 
 export const { fetchImages, onSuccessImages,fetchImage,
   onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails,
-  onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage } = counterSlice.actions
+  onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage, addAlbum } = counterSlice.actions
 export default counterSlice.reducer;
