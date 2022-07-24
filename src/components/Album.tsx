@@ -39,7 +39,10 @@ const ViewAlbumPhoto = ({ open, handleClose, photos, name }: PhotoProps) => {
             >
                 <Box sx={style}>
                     <h1>{name}</h1>
-                    <Box display={'flex'} justifyContent="space-evenly" flexWrap={'wrap'}>
+                    <Box display={'flex'} 
+                    maxHeight={'500px'}
+                    overflow={'auto'}
+                    justifyContent="space-evenly" flexWrap={'wrap'}>
                     {
                         photos.map((photo) => (
                             <img
