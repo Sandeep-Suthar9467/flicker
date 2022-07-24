@@ -44,8 +44,9 @@ const ViewAlbumPhoto = ({ open, handleClose, photos, name }: PhotoProps) => {
                     overflow={'auto'}
                     justifyContent="space-evenly" flexWrap={'wrap'}>
                     {
-                        photos.map((photo) => (
+                        photos.map((photo, idx) => (
                             <img
+                            key={photo.url + '' + idx}
                                     src={`${photo.url}`}
                                     srcSet={`${photo.url}`}
                                     alt=""
