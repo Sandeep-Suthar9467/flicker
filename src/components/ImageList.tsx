@@ -47,7 +47,7 @@ if (loading) {
       rowHeight={121}
     >
       {(loading ? Array.from(Array(50)) : itemData.photos.photo)?.map((item,index) => (
-        <ImageListItem key={item ? item.title : index.toString()} cols={1} rows={1} className="containerImg">
+        <ImageListItem key={item + index.toString()} cols={1} rows={1} className="containerImg">
           {item ? 
           <Link key={item.id} to={`/photos/${item.id}/${item.secret}`}>
           <img
@@ -56,7 +56,11 @@ if (loading) {
             loading="lazy"
           /> </Link>:
           <Skeleton variant="rectangular" width={265} height={121} />          }
-          {item ?<div className="middle">
+          {item ?<div className="middle flexCenter">
+            <div className="TitleDetails">
+                <p>{item.title}</p>
+                <p>{item.ownername}</p> 
+            </div>
             <div className="text">
               <Box display={"flex"} alignItems="center" color={"#fff"}>
                 <StarBorderIcon htmlColor="#fff"/>

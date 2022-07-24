@@ -11,6 +11,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../types/redux';
 import { addAlbum } from '../reducer';
+import Button from '@mui/material/Button';
 
 type PhotoForm = {
     selected: string[];
@@ -94,7 +95,7 @@ const AddAlbum = () => {
         setFields({ albumName: '', description: '' });
     }
     const submitAlbum = () => {
-        if(!fields.albumName || !selected.length) {
+        if(!fields.albumName || !selected.length || !selected.length) {
             return;
         }
         console.log(fields, selected);
@@ -125,7 +126,7 @@ const AddAlbum = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <form className="form">
+                    <div className="form">
                         <div className="input-container">
                             <label>Album Name </label>
                             <input type="text" name="albumName" 
@@ -142,9 +143,9 @@ const AddAlbum = () => {
                             <Photos selected={selected} onClickSelect={setSelected}/>
                         </div>
                         <div className="button-container">
-                            <input type="submit" onClick={submitAlbum} />
+                        <Button variant="contained" onClick={submitAlbum} >Submit</Button>
                         </div>
-                    </form>
+                    </div>
                 </Box>
 
             </Modal>
