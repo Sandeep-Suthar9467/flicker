@@ -77,7 +77,7 @@ const Album = () => {
                     {
                          albumsInfo?.map((album, idx) => {                            
                             return (
-                                <>
+                                <div key={idx + album.name}>
                                 <ViewAlbumPhoto open={open === album.name} 
                                 name={album.name}
                             photos={album.photos}
@@ -97,7 +97,7 @@ const Album = () => {
                                     subtitle={`Photos: ${album.photos.length}`}
                                 />
                             </ImageListItem>
-                            </>
+                            </div>
                             )
                         })
                     }
