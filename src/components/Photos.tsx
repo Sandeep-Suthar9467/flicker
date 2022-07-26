@@ -7,6 +7,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../types/redux";
 import { uploadImage } from "../reducer";
+import { Link } from "react-router-dom";
 
 const Photos = () => {
     const photos = useSelector((state:State) => state.flicker.photos)
@@ -32,14 +33,16 @@ const Photos = () => {
             {
                 <ImageList sx={{ width: '100%', display: 'flex', flexWrap: 'wrap' }} cols={4}>
                     {photos?.map((item, idx) => (
-                            <ImageListItem key={idx} sx={{ width: 260 }}>
+                            <ImageListItem key={item.id} sx={{ width: 260 }}>
+                                <Link key={item.id} to={`/photos/${item.id}/eg45645hht`}>
                                 <img
                                     style={{ height: '200px' }}
-                                    src={`${item.url}`}
-                                    srcSet={`${item.url}`}
+                                    src={`${item.url_l}`}
+                                    srcSet={`${item.url_l}`}
                                     alt=""
                                     loading="lazy"
                                 />
+                                </Link>
                             </ImageListItem>
                     ))}
                 </ImageList>

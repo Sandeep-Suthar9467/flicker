@@ -51,6 +51,16 @@ const fetchAlbumsPhoto = (id: string): Promise<APhoto[]> => {
        });
 };
 
+const fetchPhotosApi = (): Promise<APhoto> => {
+   return fetch(
+`https://www.flickr.com/services/rest?extras=url_l&get_user_info=1&jump_to=&user_id=196011922%40N07&view_as=use_pref&sort=use_pref&method=flickr.people.getPhotos&csrf=1658844848%3Awfh4890fpaj%3A79f83d23d3e8ebcafe5938145fd122dd&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
+.then((res) => res.json())
+                   .then((json) => {
+                       console.log(json);
+                     return json?.photos?.photo;
+       });
+};
+
 function* fetchImagesSaga(action: Explore) {
    try {
       const user: FlickerList = yield call(callApi, action.payload);
@@ -94,24 +104,8 @@ function* fetchAlbumphotoSaga(action: Explore) {
 };
 function* fetchPhotoSaga(action: Explore) {
    try {
-      const album = [{
-             url: 'https://picsum.photos/200/400'
-         },
-         {
-             url: 'https://picsum.photos/200/500',
-             author: 'User0789'
-         },
-         {
-         
-             url: 'https://picsum.photos/200/200',
-          
-         },
-         {
-             url: 'https://picsum.photos/200/300',
-          
-         }
-     ];
-      yield put(onSuccessPhotos(album));
+      const result: APhoto[] = yield call(fetchPhotosApi);
+      yield put(onSuccessPhotos(result));
    } catch (e) {
       console.log(e);
    }

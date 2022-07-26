@@ -80,4 +80,5 @@ export type APhoto = {
   url_o: string;
   height_o: number;
   width_o: number;
+  url_l: string;
 };

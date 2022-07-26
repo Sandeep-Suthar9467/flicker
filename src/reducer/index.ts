@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { AlbumMock } from '../types/album';
-import { Photo } from '../types/redux';
-
-
+import { AlbumMock, APhoto } from '../types/album';
 
 
 export const counterSlice = createSlice({
@@ -15,7 +12,7 @@ export const counterSlice = createSlice({
     imageInfo: {},
     isLoggedIn: false,
     comments: [],
-    photos: [] as Photo,
+    photos: [] as APhoto[],
     albumsInfo:[] as AlbumMock
   },
   reducers: {
@@ -50,7 +47,7 @@ export const counterSlice = createSlice({
       return {...state, loading: false, photos: action.payload };
     },
     uploadImage: (state, action)=>{
-      return {...state, loading: false, photos: [...state.photos, {url: action.payload}] };
+      return {...state, loading: false, photos: [...state.photos, {url_l: action.payload} as APhoto] };
     },
     addAlbum: (state, action)=>{
       return {...state, loading: false, albumsInfo: [...state.albumsInfo, action.payload] };

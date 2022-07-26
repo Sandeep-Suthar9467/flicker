@@ -12,7 +12,7 @@ export type State = {
       isLoggedIn: boolean;
       comments: any;
       albumsInfo: AlbumMock| undefined
-      photos: Photo
+      photos: APhoto[]
       albumPhotos: APhoto[]
     }
 };

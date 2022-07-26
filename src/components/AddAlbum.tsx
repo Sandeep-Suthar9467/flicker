@@ -33,17 +33,17 @@ const Photos = (props: PhotoForm) => {
                 <ImageList sx={{ width: '100%', height: '200px' }} cols={3}>
                     {photos.map((item, idx) => (
                             <ImageListItem key={idx}
-                                onClick={() => addPhoto(item.url)}
+                                onClick={() => addPhoto(item.url_l)}
                                 sx={{ width: 'auto' }}>
                                 <img
                                     style={{ height: '80px' }}
-                                    src={`${item.url}`}
-                                    srcSet={`${item.url}`}
+                                    src={`${item.url_l}`}
+                                    srcSet={`${item.url_l}`}
                                     alt=""
                                     loading="lazy"
                                 />
                                 {
-                                    selected.includes(item.url) && (
+                                    selected.includes(item.url_l) && (
                                         <ImageListItemBar
                                             sx={{
                                                 background:
