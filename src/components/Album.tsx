@@ -1,19 +1,19 @@
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../types/redux';
 import AddAlbum from './AddAlbum';
 import Loading from './Loading';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
-import { AlbumPhoto } from '../types/album';
+import { useEffect, useState } from 'react';
+import { fetchAlbumPhotos } from '../reducer';
 
 type PhotoProps = {
     open: boolean;
     handleClose: any;
-    photos: AlbumPhoto;
+    id: string;
     name: string;
 }
 
@@ -28,8 +28,12 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-const ViewAlbumPhoto = ({ open, handleClose, photos, name }: PhotoProps) => {
-    console.log(open)
+const ViewAlbumPhoto = ({ open, handleClose, id, name }: PhotoProps) => {
+    const photos = useSelector((state: State) => state.flicker.albumPhotos) || [];
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchAlbumPhotos(id))
+    }, []);
     return (
         <Modal
                 open={open}
@@ -46,9 +50,9 @@ const ViewAlbumPhoto = ({ open, handleClose, photos, name }: PhotoProps) => {
                     {
                         photos.map((photo, idx) => (
                             <img
-                            key={photo.url + '' + idx}
-                                    src={`${photo.url}`}
-                                    srcSet={`${photo.url}`}
+                            key={photo.id + '' + idx}
+                                    src={`${photo.url_o}`}
+                                    srcSet={`${photo.url_o}`}
                                     alt=""
                                     loading="lazy"
                                     style={{height: '200px', width: '300px'}}
@@ -77,24 +81,23 @@ const Album = () => {
                     {
                          albumsInfo?.map((album, idx) => {                            
                             return (
-                                <div key={idx + album.name}>
-                                <ViewAlbumPhoto open={open === album.name} 
-                                name={album.name}
-                            photos={album.photos}
+                                <div key={idx + album.id}>
+                                <ViewAlbumPhoto open={open === album.id} 
+                                name={album.title}
+                            id={album.id}
                             handleClose={handleClose} />
                                 <ImageListItem key={idx}>
                                 <img
-                                    onClick={() => handleOpen(album.name)}
-                                    src={`${album.photos[0].url}`}
-                                    srcSet={`${album.photos[0].url}`}
+                                    onClick={() => handleOpen(album.id)}
+                                    src={`${album.url}`}
+                                    srcSet={`${album.url}`}
                                     alt=""
                                     loading="lazy"
                                     style={{height: '200px', width: '300px'}}
                                 />
-                                <h1>{open}</h1>
                                 <ImageListItemBar
-                                    title={album.name}
-                                    subtitle={`Photos: ${album.photos.length}`}
+                                    title={album.title}
+                                    subtitle={`Photos: ${album.photos}`}
                                 />
                             </ImageListItem>
                             </div>

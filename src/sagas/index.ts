@@ -2,8 +2,8 @@ import { call, put, takeLatest, all } from 'redux-saga/effects'
 import { FLICKER_API_KEY } from '../constant';
 import { fetchImage, fetchImages, onSuccessImage,
    onSuccessImages, fetchAlbumDetails,
-   onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos } from "../reducer";
-import { Album } from '../types/album';
+   onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, onSuccessAlbumPhotos, fetchAlbumPhotos} from "../reducer";
+import { Album, APhoto, PhotosetEntity } from '../types/album';
 import { Explore, FlickerList, Photos } from '../types/flicker';
 
 const callApi = (page: string): Promise<FlickerList> => {
@@ -33,11 +33,21 @@ const callCommentApi = (id: string): Promise<Photos> => {
 
 const fetchAlbums = (): Promise<Album> => {
    return fetch(
-`https://api.flickr.com/services/rest?primary_photo_extras=owner_name&method=flickr.photosets.getList&csrf=1658326216%3A98arp0h5l3r%3Aca44d55d7b4b5520b9b7470a0912fee2&api_key=e44d0b86bf1ae9eabbb7581f172a5dcf&format=json&nojsoncallback=1`)
+`https://www.flickr.com/services/rest?get_user_info=1&jump_to=&primary_photo_extras=url_o&user_id=196011922@N07&method=flickr.photosets.getList&csrf=1658835091%3A5enjyidx5m%3A736591fb88a0dede1329dbb3f09ccd40&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
 .then((res) => res.json())
                    .then((json) => {
                        console.log(json);
-                     return json;
+                     return json?.photosets?.photoset;
+       });
+};
+
+const fetchAlbumsPhoto = (id: string): Promise<APhoto[]> => {
+   return fetch(
+`https://www.flickr.com/services/rest?photoset_id=${id}&extras=url_o&method=flickr.photosets.getPhotos&csrf=1658835091%3A5enjyidx5m%3A736591fb88a0dede1329dbb3f09ccd40&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
+.then((res) => res.json())
+                   .then((json) => {
+                       console.log(json);
+                     return json?.photoset?.photo;
        });
 };
 
@@ -60,33 +70,28 @@ function* fetchImageSaga(action: Explore) {
 }
 function* fetchAlbumSaga(action: Explore) {
    try {
-      yield call(fetchAlbums);
-      yield put(onSuccessAlbumDetails([{
-         name: 'Album 1',
-         photos: [{
-             url: 'https://picsum.photos/200',
-             author: 'User0789'
-         },
-         {
-             url: 'https://picsum.photos/200',
-             author: 'User0789'
-         }]
-     }, {
-         name: 'Album 2',
-         photos: [{
-             url: 'https://picsum.photos/200/200',
-             author: 'User0789'
-         },
-         {
-             url: 'https://picsum.photos/200/300',
-             author: 'User0789'
-         }]
-     }]));
+      const result: PhotosetEntity[] = yield call(fetchAlbums);
+      const mapped = result?.map((r) => ({
+         id: r.id,
+         title: r.title._content,
+         desc: r.description._content,
+         photos: r.photos,
+         url: r?.primary_photo_extras?.url_o
+      }))
+      yield put(onSuccessAlbumDetails(mapped));
    } catch (e) {
       console.log(e);
    }
 };
 
+function* fetchAlbumphotoSaga(action: Explore) {
+   try {
+      const result: APhoto[] = yield call(fetchAlbumsPhoto, action.payload);
+      yield put(onSuccessAlbumPhotos(result));
+   } catch (e) {
+      console.log(e);
+   }
+};
 function* fetchPhotoSaga(action: Explore) {
    try {
       const album = [{
@@ -116,7 +121,8 @@ function* mySaga() {
    yield all([takeLatest(fetchImages.type, fetchImagesSaga),
    takeLatest(fetchImage.type, fetchImageSaga),
    takeLatest(fetchAlbumDetails.type, fetchAlbumSaga),
-   takeLatest(fetchPhotos.type, fetchPhotoSaga)
+   takeLatest(fetchPhotos.type, fetchPhotoSaga),
+   takeLatest(fetchAlbumPhotos.type, fetchAlbumphotoSaga),
    ]);
 }
 

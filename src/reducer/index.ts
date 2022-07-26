@@ -54,11 +54,18 @@ export const counterSlice = createSlice({
     },
     addAlbum: (state, action)=>{
       return {...state, loading: false, albumsInfo: [...state.albumsInfo, action.payload] };
-    }
+    },
+    fetchAlbumPhotos: (state, action)=>{
+      return {...state, };
+    },
+    onSuccessAlbumPhotos: (state, action)=>{
+      return {...state, albumPhotos: action.payload };
+    },
   },
 });
 
 export const { fetchImages, onSuccessImages,fetchImage,
   onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails,
-  onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage, addAlbum } = counterSlice.actions
+  onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage, addAlbum,
+  onSuccessAlbumPhotos, fetchAlbumPhotos } = counterSlice.actions
 export default counterSlice.reducer;
