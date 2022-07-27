@@ -25,7 +25,7 @@ const Photos = (props: PhotoForm) => {
             onClickSelect(selected.filter(item => item !== id));
             return;
         }
-        onClickSelect([...selected, id]);
+        onClickSelect([id]);
     }
     return (
         <>
@@ -33,7 +33,7 @@ const Photos = (props: PhotoForm) => {
                 <ImageList sx={{ width: '100%', height: '200px' }} cols={3}>
                     {photos.map((item, idx) => (
                             <ImageListItem key={idx}
-                                onClick={() => addPhoto(item.url_l)}
+                                onClick={() => addPhoto(item.id)}
                                 sx={{ width: 'auto' }}>
                                 <img
                                     style={{ height: '80px' }}
@@ -43,7 +43,7 @@ const Photos = (props: PhotoForm) => {
                                     loading="lazy"
                                 />
                                 {
-                                    selected.includes(item.url_l) && (
+                                    selected.includes(item.id) && (
                                         <ImageListItemBar
                                             sx={{
                                                 background:
@@ -89,7 +89,7 @@ const AddAlbum = () => {
     const [fields, setFields] = useState({ albumName: '', description: '' });
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {setOpen(false); reset(); };
     const reset = () => {
         setSelected([]);
         setFields({ albumName: '', description: '' });
@@ -102,10 +102,9 @@ const AddAlbum = () => {
         dispatch(addAlbum({
             name: fields.albumName,
             description: fields.description,
-            photos: selected.map((url) => ({ url, author: 'user007'}))
+            photos: selected.join(","),
+            onCloseHandler: handleClose
         }));
-        handleClose();
-        reset();
     }
     return (
         <>
