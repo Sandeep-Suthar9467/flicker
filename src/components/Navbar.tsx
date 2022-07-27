@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import LoginForm from './LoginForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { onLogoutSuccess } from '../reducer';
+import { initLogin, onLogoutSuccess } from '../reducer';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -24,7 +24,6 @@ const style = {
 const ResponsiveAppBar = (): React.ReactElement => {
   const isLoggedIn = useSelector((state: any) => state?.flicker?.isLoggedIn);
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,11 +31,14 @@ const ResponsiveAppBar = (): React.ReactElement => {
   const logout =() =>{
     dispatch(onLogoutSuccess());
         setTimeout(() => {
+          localStorage.setItem('loggedIn', '');
           navigate("/");
         }, 0);
   }
 
-
+  const handleOpen = () => {
+    dispatch(initLogin())
+  }
   return (
     <>
       <AppBar position="static" style={{}} >

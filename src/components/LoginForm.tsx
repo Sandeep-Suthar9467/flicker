@@ -39,23 +39,6 @@ const LoginForm = (props: Props) => {
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
-    var { uname, pass } = document.forms[0];
-    const userData = database.find((user) => user.username === uname.value);
-
-    if (userData) {
-      if (userData.password !== pass.value) {
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        props.handleClose();
-        dispatch(onLoginSuccess());
-        setTimeout(() => {
-          navigate("/user");
-        }, 0);
-      }
-    } else {
-      setErrorMessages({ name: "uname", message: errors.uname });
-    }
   };
 
   const renderErrorMessage = (name:string) =>

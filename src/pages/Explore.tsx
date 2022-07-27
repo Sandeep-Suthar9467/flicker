@@ -4,9 +4,10 @@ import ImageList from '../components/ImageList'
 import Pagination  from '../components/Pagination';
 import { State } from '../types/redux';
 
-const Explore = (): ReactElement => {
+const Explore = (props: any): ReactElement => {
   const itemData = useSelector((state:State) => state.flicker.images)
   const loading = useSelector((state:State) => state.flicker.loading)
+  console.log(props.match);
   return (
     <>
       <div style={{display: 'flex' , justifyContent: 'center'}}>

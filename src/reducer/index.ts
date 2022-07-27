@@ -16,6 +16,12 @@ export const counterSlice = createSlice({
     albumsInfo:[] as AlbumMock
   },
   reducers: {
+    initLogin: (state) => {
+      return {...state}
+    },
+    loginCheck: (state, action) => {
+      return {...state}
+    },
     fetchImages: (state, action) => {
       return {...state, loading: true, page: action.payload };
     },
@@ -28,11 +34,11 @@ export const counterSlice = createSlice({
     onSuccessImage: (state,action)=>{
       return {...state, loading: false, imageInfo: action.payload.photo ,comments: action.payload.comments};
     },
-    onLoginSuccess: (state) => {
-      return {...state, loading: false, isLoggedIn: true };
+    onLoginSuccess: (state, action) => {
+      return {...state, loading: false, isLoggedIn: true, userInfo: action.payload};
     },
     onLogoutSuccess: (state) => {
-      return {...state, loading: false, isLoggedIn: false };
+      return {...state, loading: false, isLoggedIn: false, userInfo: null};
     },
     fetchAlbumDetails: (state)=>{
       return {...state,loading: true };
@@ -61,8 +67,8 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { fetchImages, onSuccessImages,fetchImage,
+export const { initLogin, fetchImages, onSuccessImages,fetchImage,
   onSuccessImage ,onLoginSuccess,onLogoutSuccess, fetchAlbumDetails,
   onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, uploadImage, addAlbum,
-  onSuccessAlbumPhotos, fetchAlbumPhotos } = counterSlice.actions
+  onSuccessAlbumPhotos, fetchAlbumPhotos, loginCheck } = counterSlice.actions
 export default counterSlice.reducer;
