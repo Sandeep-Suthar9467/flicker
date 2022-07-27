@@ -1,5 +1,5 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects'
-import { FLICKER_API_KEY } from '../constant';
+import { call, put, takeLatest, all, select } from 'redux-saga/effects'
+import { FLICKER_API_KEY, FLICKER_API_SECRET } from '../constant';
 import {
    fetchImage, fetchImages, onSuccessImage,
    onSuccessImages, fetchAlbumDetails,
@@ -7,6 +7,7 @@ import {
 } from "../reducer";
 import { Album, APhoto, PhotosetEntity } from '../types/album';
 import { Explore, FlickerList, Photos } from '../types/flicker';
+import { State } from '../types/redux';
 import { formBaseString, formQueryString, setAuthVals, sign } from '../util';
 
 const callApi = (page: string): Promise<FlickerList> => {
@@ -31,7 +32,7 @@ const getTokenUser = (verify: string): Promise<string | void> => {
 
    const options = setAuthVals({
       api_key: FLICKER_API_KEY,
-      secret: "e7b4fc0006e810ea",
+      secret: FLICKER_API_SECRET,
       oauth_token: localStorage.getItem('token'),
       oauth_verifier: verify,
       oauth_token_secret: localStorage.getItem('secretToken')
@@ -70,14 +71,13 @@ const loginApi = () => {
 
    var requestOptions: RequestInit = {
       method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
+      headers: myHeaders
    };
 
 
    const options = setAuthVals({
       api_key: FLICKER_API_KEY,
-      secret: "e7b4fc0006e810ea"
+      secret: FLICKER_API_SECRET
   });
 
     var queryArguments = {
@@ -128,9 +128,9 @@ const callCommentApi = (id: string): Promise<Photos> => {
       });
 };
 
-const fetchAlbums = (): Promise<Album> => {
+const fetchAlbums = (userId: string): Promise<Album> => {
    return fetch(
-      `https://www.flickr.com/services/rest?get_user_info=1&jump_to=&primary_photo_extras=url_o&user_id=196011922@N07&method=flickr.photosets.getList&csrf=1658835091%3A5enjyidx5m%3A736591fb88a0dede1329dbb3f09ccd40&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
+      `https://www.flickr.com/services/rest?get_user_info=1&jump_to=&primary_photo_extras=url_o&user_id=${userId}&method=flickr.photosets.getList&csrf=1658835091%3A5enjyidx5m%3A736591fb88a0dede1329dbb3f09ccd40&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
       .then((res) => res.json())
       .then((json) => {
          console.log(json);
@@ -148,9 +148,9 @@ const fetchAlbumsPhoto = (id: string): Promise<APhoto[]> => {
       });
 };
 
-const fetchPhotosApi = (): Promise<APhoto> => {
+const fetchPhotosApi = (userId: string): Promise<APhoto> => {
    return fetch(
-      `https://www.flickr.com/services/rest?extras=url_l&get_user_info=1&jump_to=&user_id=196011922%40N07&view_as=use_pref&sort=use_pref&method=flickr.people.getPhotos&csrf=1658844848%3Awfh4890fpaj%3A79f83d23d3e8ebcafe5938145fd122dd&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
+      `https://www.flickr.com/services/rest?extras=url_l&get_user_info=1&jump_to=&user_id=${userId}&view_as=use_pref&sort=use_pref&method=flickr.people.getPhotos&csrf=1658844848%3Awfh4890fpaj%3A79f83d23d3e8ebcafe5938145fd122dd&api_key=${FLICKER_API_KEY}&format=json&hermes=1&hermesClient=1&nojsoncallback=1`)
       .then((res) => res.json())
       .then((json) => {
          console.log(json);
@@ -177,7 +177,9 @@ function* fetchImageSaga(action: Explore) {
 }
 function* fetchAlbumSaga(action: Explore) {
    try {
-      const result: PhotosetEntity[] = yield call(fetchAlbums);
+      const state: State = yield select((state: State) => state)
+      const { flicker: { userInfo } } = state;
+      const result: PhotosetEntity[] = yield call(fetchAlbums, userInfo.get('user_nsid'));
       const mapped = result?.map((r) => ({
          id: r.id,
          title: r.title._content,
@@ -201,7 +203,9 @@ function* fetchAlbumphotoSaga(action: Explore) {
 };
 function* fetchPhotoSaga(action: Explore) {
    try {
-      const result: APhoto[] = yield call(fetchPhotosApi);
+      const state: State = yield select((state: State) => state)
+      const { flicker: { userInfo } } = state;
+      const result: APhoto[] = yield call(fetchPhotosApi, userInfo.get('user_nsid'));
       yield put(onSuccessPhotos(result));
    } catch (e) {
       console.log(e);
@@ -218,16 +222,19 @@ function* loginSaga() {
 
 function* loginVerifySaga(action: any) {
    try {
-     if(localStorage.getItem('loggedIn')) {
-      const q = new URLSearchParams(localStorage.getItem('loggedIn') || '');
+      const loggedIn = localStorage.getItem('loggedIn');
+     if(loggedIn) {
+      const q = new URLSearchParams(loggedIn || '');
       yield put(onLoginSuccess(q));
       return;
      }
      const res: string = yield call(getTokenUser, action.payload);
-     localStorage.setItem('loggedIn', res);
-     console.log(res, ';res');
-     const q = new URLSearchParams(res);
-     yield put(onLoginSuccess(q));
+     console.log(res, ';res', res.indexOf('oauth_problem'));
+     if(res && res.indexOf('oauth_problem') === -1) {
+      localStorage.setItem('loggedIn', res);
+      const q = new URLSearchParams(res);
+      yield put(onLoginSuccess(q));
+     }
    } catch(e) {
       console.log(e);
    }

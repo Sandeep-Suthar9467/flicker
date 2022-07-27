@@ -13,6 +13,7 @@ export type State = {
       comments: any;
       albumsInfo: AlbumMock| undefined
       photos: APhoto[]
-      albumPhotos: APhoto[]
+      albumPhotos: APhoto[];
+      userInfo: any
     }
 };
