@@ -3,28 +3,14 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import LoginForm from './LoginForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { initLogin, onLogoutSuccess } from '../reducer';
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-}
+
 const ResponsiveAppBar = (): React.ReactElement => {
   const isLoggedIn = useSelector((state: any) => state?.flicker?.isLoggedIn);
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -108,18 +94,6 @@ const ResponsiveAppBar = (): React.ReactElement => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-
-          <LoginForm handleClose={handleClose} />
-        </Box>
-
-      </Modal>
     </>
   );
 };
