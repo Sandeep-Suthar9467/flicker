@@ -110,13 +110,13 @@ const createAlbum = (title: string, photoids: string): Promise<string | void> =>
          primary_photo_id: photoids
         };
 
-        console.log('options', options, queryArguments)
+        
    const url = 'https://www.flickr.com/services/rest';
     var queryString = formQueryString(queryArguments);
     var data = formBaseString("GET", url, queryString);
     var signature = sign(data, options.secret, options.oauth_token_secret);
     var flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
-    console.log(flickrURL, 'flickrURL');
+    
    return fetch(flickrURL, requestOptions)
       .then(response => response.text())
       .then(result => {
@@ -156,13 +156,13 @@ const getTokenUser = (verify: string): Promise<string | void> => {
           oauth_verifier: options.oauth_verifier
         };
 
-        console.log('options', options, queryArguments)
+        
    const url = 'https://www.flickr.com/services/oauth/access_token';
     var queryString = formQueryString(queryArguments);
     var data = formBaseString("GET", url, queryString);
     var signature = sign(data, options.secret, options.oauth_token_secret);
     var flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
-    console.log(flickrURL, 'flickrURL');
+    
    return fetch(flickrURL, requestOptions)
       .then(response => response.text())
       .then(result => {
@@ -203,7 +203,7 @@ const loginApi = () => {
     var data = formBaseString("GET", url, queryString);
     var signature = sign(data, options.secret, options.oauth_token_secret);
     var flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
-    console.log(flickrURL, 'flickrURL');
+    
    fetch(flickrURL, requestOptions)
       .then(response => response.text())
       .then(result => {
@@ -336,7 +336,7 @@ function* loginVerifySaga(action: any) {
       return;
      }
      const res: string = yield call(getTokenUser, action.payload);
-     console.log(res, ';res', res.indexOf('oauth_problem'));
+     
      if(res && res.indexOf('oauth_problem') === -1) {
       localStorage.setItem('loggedIn', res);
       const q = new URLSearchParams(res);
@@ -350,8 +350,8 @@ function* loginVerifySaga(action: any) {
 function* addAlbumSaga(action: any) {
    try {
       const { name, photos, onCloseHandler } = action.payload;
-     const res: string = yield call(createAlbum, name, photos);
-     console.log(res, ';res', res.indexOf('oauth_problem'));
+     yield call(createAlbum, name, photos);
+     
      yield put(fetchAlbumDetails());
      onCloseHandler();
    } catch(e) {
@@ -362,7 +362,7 @@ function* addAlbumSaga(action: any) {
 function* uploadSaga(action: any) {
 try {
    const blobUrl = action.payload;
-   console.log('blob', blobUrl);
+   
    const state: State = yield select((state: State) => state)
       const { flicker: { userInfo } } = state;
    const blob: Blob = yield call(resolveImgeBlob, blobUrl);
