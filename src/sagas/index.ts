@@ -3,6 +3,7 @@ import { FLICKER_API_KEY, FLICKER_API_SECRET } from '../constant';
 import {
    fetchImage, fetchImages, onSuccessImage,
    onSuccessImages, fetchAlbumDetails,
+   uploadImage,
    onSuccessAlbumDetails, fetchPhotos, onSuccessPhotos, onSuccessAlbumPhotos, fetchAlbumPhotos, initLogin, loginCheck, onLoginSuccess, addAlbum
 } from "../reducer";
 import { Album, APhoto, PhotosetEntity } from '../types/album';
@@ -19,6 +20,63 @@ const callApi = (page: string): Promise<FlickerList> => {
       });
 }
 
+const resolveImgeBlob = (blobUrl: string): Promise<Blob> => {
+   return fetch(blobUrl).then(r => r.blob());
+ };
+
+const upload = (photoOptions: Record<string, any>, photo: Blob, accessToken: string, accessSecret: string): Promise<string | void> => {
+   if(photoOptions.title) {
+      photoOptions.title = photoOptions.title.replace(/'/g,'%27').replace(/"/g,'%22')
+    }
+
+    const flickrOptions = setAuthVals({
+      api_key: FLICKER_API_KEY,
+      secret: FLICKER_API_SECRET,
+      access_token: accessToken,
+      access_token_secret: accessSecret
+  });
+    photoOptions.oauth_signature_method = "HMAC-SHA1";
+    photoOptions.oauth_consumer_key = flickrOptions.api_key;
+    photoOptions.oauth_token = flickrOptions.access_token;
+    photoOptions.oauth_nonce = flickrOptions.oauth_nonce;
+    photoOptions.oauth_timestamp = flickrOptions.oauth_timestamp;
+
+    
+    var url = "https://up.flickr.com/services/upload/";
+    var queryString = formQueryString(photoOptions);
+    var data = formBaseString("POST", url, queryString);
+    photoOptions.oauth_signature = sign(data, flickrOptions.secret, flickrOptions.access_token_secret);
+
+    
+    photoOptions.photo = photo;
+
+    
+    if (photoOptions.tags) {
+      photoOptions.tags = photoOptions.tags.replace(/%27/g,"'");
+    }
+    if (photoOptions.title) {
+      photoOptions.title = photoOptions.title.replace(/%27/g,"'").replace(/%22/g,'"');
+    }
+
+    var signature = "&oauth_signature=" + photoOptions.oauth_signature;
+    var flickrURL = url + "?" + queryString + signature;
+
+    const formData  = new FormData();
+
+  for(const name in photoOptions) {
+    formData.append(name, photoOptions[name]);
+  }
+
+  return fetch(flickrURL, {
+    method: 'POST',
+    body: formData
+  }).then(response => response.text())
+  .then(result => {
+     console.log(result);
+     return result;
+  })
+  .catch(error => console.log('error', error));;
+}
 const createAlbum = (title: string, photoids: string): Promise<string | void> => {
    var myHeaders = new Headers();
    myHeaders.append("Cookie", "ccc=%7B%22needsConsent%22%3Afalse%2C%22managed%22%3A0%2C%22changed%22%3A0%2C%22info%22%3A%7B%22cookieBlock%22%3A%7B%22level%22%3A0%2C%22blockRan%22%3A0%7D%7D%7D; flrbgdrp=1658380972-c0731ddb94a2e686c3bad5bfd2cb8f9cdeb5917e; flrbgmrp=1658380972-3240d0cc14ee3fe8c7c059ab65c049e2786d4d1c; flrbgrp=1658380972-6145091fc476443a63c3db661947ff22a87c4757; flrbp=1658380972-e0603f21d438f781008d18d17a5900ddd4adaffc; flrbrp=1658380972-5499a4a29d16b5ddcfe88e420a27b4f0209068d3; flrbrst=1658380972-98bf2117d32e71e0c784765d6978b70569877236; flrtags=1658380972-c44b7380882daefe8189b4f813651a4ee61524ac; localization=en-us%3Bin%3Bin; xb=160246");
@@ -300,6 +358,20 @@ function* addAlbumSaga(action: any) {
       console.log(e);
    }
 }
+
+function* uploadSaga(action: any) {
+try {
+   const blobUrl = action.payload;
+   console.log('blob', blobUrl);
+   const state: State = yield select((state: State) => state)
+      const { flicker: { userInfo } } = state;
+   const blob: Blob = yield call(resolveImgeBlob, blobUrl);
+   yield call(upload, {title: 'some' }, blob, userInfo.get('oauth_token'), userInfo.get('oauth_token_secret'));
+   yield put(fetchPhotos());
+}catch (e) {
+   console.log(e);
+}
+}
 function* mySaga() {
    yield all([takeLatest(fetchImages.type, fetchImagesSaga),
    takeLatest(fetchImage.type, fetchImageSaga),
@@ -309,6 +381,7 @@ function* mySaga() {
    takeLatest(initLogin.type, loginSaga),
    takeLatest(loginCheck.type, loginVerifySaga),
    takeLatest(addAlbum.type, addAlbumSaga),
+   takeLatest(uploadImage.type, uploadSaga)
    ]);
 }
 
