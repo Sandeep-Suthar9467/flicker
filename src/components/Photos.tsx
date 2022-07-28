@@ -33,7 +33,7 @@ const Photos = () => {
             {
                 <ImageList sx={{ width: '100%', display: 'flex', flexWrap: 'wrap' }} cols={4}>
                     {photos?.map((item, idx) => (
-                            <ImageListItem key={item.id} sx={{ width: 260 }}>
+                            <ImageListItem key={item.id + idx} sx={{ width: 260 }}>
                                 <Link key={item.id} to={`/photos/${item.id}/eg45645hht`}>
                                 <img
                                     style={{ height: '200px' }}

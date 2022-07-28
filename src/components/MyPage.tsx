@@ -6,8 +6,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Album from './Album';
 import Photos from './Photos';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchAlbumDetails, fetchPhotos } from '../reducer';
+import { State } from '../types/redux';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,7 +46,7 @@ function a11yProps(index: number) {
 export const MyPage = () => {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
-
+  const userInfo = useSelector((state: State) => state.flicker.userInfo);
   React.useEffect(() => {
     dispatch(fetchAlbumDetails());
     dispatch(fetchPhotos());
@@ -57,7 +58,7 @@ export const MyPage = () => {
   return (
     <Box width={"80%"}>
       <Box textAlign={"left"} margin="18px">
-        <Typography fontSize="28px" fontWeight={"bold"}>User0789</Typography>
+        <Typography fontSize="28px" fontWeight={"bold"}>{ userInfo && userInfo.get('user_nsid')}</Typography>
       </Box>
       <div >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
