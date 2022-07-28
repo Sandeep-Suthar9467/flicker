@@ -53,7 +53,7 @@ export const counterSlice = createSlice({
       return {...state, loading: false, photos: action.payload };
     },
     uploadImage: (state, action)=>{
-      return {...state, loading: false, photos: [...state.photos, {url_l: action.payload} as APhoto] };
+      return {...state, loading: false };
     },
     addAlbum: (state, action)=>{
       return {...state, loading: false };
