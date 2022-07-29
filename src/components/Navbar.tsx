@@ -78,7 +78,7 @@ const ResponsiveAppBar = (): React.ReactElement => {
             {
               isLoggedIn ?
                 <Box marginLeft="15px" marginRight={"15px"}>
-                  <Link to="/user" style={{ color: 'white' }}>Account</Link>
+                  <Link to="/user" style={{ color: 'white' }}>My Account</Link>
                 </Box> : null
             }
                 <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>

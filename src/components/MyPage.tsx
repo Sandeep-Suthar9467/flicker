@@ -58,7 +58,7 @@ export const MyPage = () => {
   return (
     <Box width={"80%"}>
       <Box textAlign={"left"} margin="18px">
-        <Typography fontSize="28px" fontWeight={"bold"}>{ userInfo && userInfo.get('user_nsid')}</Typography>
+        <Typography fontSize="28px" fontWeight={"bold"}>{ userInfo && userInfo.get('fullname')}</Typography>
       </Box>
       <div >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
